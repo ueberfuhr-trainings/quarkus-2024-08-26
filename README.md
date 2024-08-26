@@ -1,1 +1,5 @@
-# quarkus-2024-08-26
+# Quarkus-Grundlagen
+
+Hier findest Du Unterlagen zum Kurs:
+
+- [Grafiken](./docs/README.md)
