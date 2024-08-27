@@ -89,14 +89,11 @@ public class CustomersResource {
 
   @DELETE
   @Path("/{uuid}")
-  public Response deleteCustomer(@PathParam("uuid") UUID uuid) {
+  public void deleteCustomer(@PathParam("uuid") UUID uuid) {
     final var deletedCustomer = customers.remove(uuid);
     if (null == deletedCustomer) {
       throw new NotFoundException();
     }
-    return Response
-      .noContent()
-      .build();
   }
 
 }
