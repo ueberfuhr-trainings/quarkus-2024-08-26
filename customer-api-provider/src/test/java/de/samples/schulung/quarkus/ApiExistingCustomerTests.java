@@ -7,8 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
 class ApiExistingCustomerTests {
@@ -35,7 +34,7 @@ class ApiExistingCustomerTests {
       .header("Location");
   }
 
-  // GET /customers -> 200 + JSON
+  // DELETE /customers/{uuid} -> 204
   @Test
   @DisplayName("DELETE /customers/{uuid} -> 204")
   void given_whenDeleteCustomer_thenReturn204() {
@@ -44,6 +43,20 @@ class ApiExistingCustomerTests {
       .delete(existingCustomerUri)
       .then()
       .statusCode(204);
+  }
+
+  // DELETE /customers/{uuid} -> 204
+  @Test
+  @DisplayName("GET /customers/{uuid} -> 200+JSON")
+  void given_whenGetCustomer_thenReturn200() {
+    given()
+      .when()
+      .accept(ContentType.JSON)
+      .get(existingCustomerUri)
+      .then()
+      .statusCode(200)
+      .contentType(ContentType.JSON)
+      .body("name", is(equalTo("John")));
   }
 
 }
