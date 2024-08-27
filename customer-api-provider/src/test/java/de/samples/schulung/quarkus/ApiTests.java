@@ -29,6 +29,21 @@ class ApiTests {
       .body(endsWith("]"));
   }
 
+  // GET /customers -> 200 + JSON
+  @Test
+  @DisplayName("GET /customers (XML) -> 406")
+  void given_whenGetCustomersAsXml_thenReturn406() {
+    // Setup - Test - Assertions
+    // Arrange - Act - Assert
+    // Given - When - Then
+    given()
+      .when()
+      .accept(ContentType.XML)
+      .get("/api/v1/customers")
+      .then()
+      .statusCode(406);
+  }
+
   @Test
   @DisplayName("POST /customers -> 201")
   void givenOneCustomer_whenPostCustomers_thenReturn200_andLocationHeaderExists() {
@@ -51,6 +66,25 @@ class ApiTests {
       .body("name", is(equalTo("John")))
       .body("uuid", is(notNullValue()));
   }
+
+  @Test
+  @DisplayName("POST /customers (XML) -> 415")
+  void givenOneCustomerAsXml_whenPostCustomers_thenReturn415() {
+    given()
+      .contentType(ContentType.XML)
+      .body("""
+        <customer>
+            <name>John</name>
+            <birthdate>2004-05-02</birthdate>
+            <state>active</state>
+        </customer>
+        """)
+      .when()
+      .post("/api/v1/customers")
+      .then()
+      .statusCode(415);
+  }
+
 
   @Test
   @DisplayName("POST /customers -> Default State")
