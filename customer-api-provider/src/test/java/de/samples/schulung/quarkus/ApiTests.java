@@ -105,4 +105,26 @@ class ApiTests {
       .body("state", is(equalTo("active")));
   }
 
+  @Test
+  @DisplayName("POST /customers -> UUID readonly")
+  void givenOneCustomerWithUuid_whenPostCustomers_thenReturnGeneratedId() {
+    given()
+      .contentType(ContentType.JSON)
+      .body("""
+        {
+          "name": "John",
+          "birthdate": "2004-05-02",
+          "state": "active",
+          "uuid": "db998f52-1db7-4f66-af42-365d9ac41df2"
+        }
+        """)
+      .when()
+      .accept(ContentType.JSON)
+      .post("/api/v1/customers")
+      .then()
+      .statusCode(201)
+      .contentType(ContentType.JSON)
+      .body("uuid", is(not(equalTo("db998f52-1db7-4f66-af42-365d9ac41df2"))));
+  }
+
 }
