@@ -62,6 +62,9 @@ public class CustomersResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response createCustomer(CustomerDto customer) {
     customer.setUuid(UUID.randomUUID());
+    if(null == customer.getState()) {
+      customer.setState("active");
+    }
     customers.put(customer.getUuid(), customer);
     final var location = UriBuilder
       .fromResource(CustomersResource.class)
@@ -77,6 +80,15 @@ public class CustomersResource {
     return Response
       .created(location)
       .entity(customer)
+      .build();
+  }
+
+  @DELETE
+  @Path("/{uuid}")
+  public Response deleteCustomer(@PathParam("uuid") UUID uuid) {
+    customers.remove(uuid);
+    return Response
+      .noContent()
       .build();
   }
 

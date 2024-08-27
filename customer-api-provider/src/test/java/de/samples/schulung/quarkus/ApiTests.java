@@ -1,11 +1,12 @@
 package de.samples.schulung.quarkus;
 
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
 class ApiTests {
@@ -17,21 +18,21 @@ class ApiTests {
     // Setup - Test - Assertions
     // Arrange - Act - Assert
     // Given - When - Then
-    RestAssured.given()
+    given()
       .when()
       .accept(ContentType.JSON)
       .get("/api/v1/customers")
       .then()
       .statusCode(200)
       .contentType(ContentType.JSON)
-      .body(Matchers.startsWith("["))
-      .body(Matchers.endsWith("]"));
+      .body(startsWith("["))
+      .body(endsWith("]"));
   }
 
   @Test
   @DisplayName("POST /customers -> 201")
   void givenOneCustomer_whenPostCustomers_thenReturn200_andLocationHeaderExists() {
-    RestAssured.given()
+    given()
       .contentType(ContentType.JSON)
       .body("""
         {
@@ -46,8 +47,28 @@ class ApiTests {
       .then()
       .statusCode(201)
       .contentType(ContentType.JSON)
-      .body("name", Matchers.is(Matchers.equalTo("John")))
-      .body("uuid", Matchers.is(Matchers.notNullValue()));
+      .header("Location", is(notNullValue()))
+      .body("name", is(equalTo("John")))
+      .body("uuid", is(notNullValue()));
+  }
+
+  @Test
+  @DisplayName("POST /customers -> Default State")
+  void givenOneCustomerWithoutState_whenPostCustomers_thenReturnCustomerWithStateActive() {
+    given()
+      .contentType(ContentType.JSON)
+      .body("""
+        {
+          "name": "John",
+          "birthdate": "2004-05-02"
+        }
+        """)
+      .when()
+      .accept(ContentType.JSON)
+      .post("/api/v1/customers")
+      .then()
+      .statusCode(201)
+      .body("state", is(equalTo("active")));
   }
 
 }
