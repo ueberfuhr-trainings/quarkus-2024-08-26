@@ -15,10 +15,10 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CustomerDto {
 
-    private UUID uuid;
-    private String name;
-    @JsonbProperty("birthdate")
-    private LocalDate birthday;
-    private String state;
+  private UUID uuid;
+  private String name;
+  @JsonbProperty("birthdate")
+  private LocalDate birthday;
+  private String state;
 
 }
