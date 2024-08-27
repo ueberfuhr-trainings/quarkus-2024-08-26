@@ -127,4 +127,57 @@ class ApiTests {
       .body("uuid", is(not(equalTo("db998f52-1db7-4f66-af42-365d9ac41df2"))));
   }
 
+  @Test
+  @DisplayName("POST /customers -> name must have at least 3 chars")
+  void givenOneCustomerWithNameTooShort_whenPostCustomers_thenReturn400() {
+    given()
+      .contentType(ContentType.JSON)
+      .body("""
+        {
+          "name": "J",
+          "birthdate": "2004-05-02",
+          "state": "active"
+        }
+        """)
+      .when()
+      .post("/api/v1/customers")
+      .then()
+      .statusCode(400);
+  }
+
+  @Test
+  @DisplayName("POST /customers -> name must have at most 100 chars")
+  void givenOneCustomerWithNameTooLong_whenPostCustomers_thenReturn400() {
+    given()
+      .contentType(ContentType.JSON)
+      .body("""
+        {
+          "name": "J01234567890012345678900123456789001234567890012345678900123456789001234567890012345678900123456789001234567890",
+          "birthdate": "2004-05-02",
+          "state": "active"
+        }
+        """)
+      .when()
+      .post("/api/v1/customers")
+      .then()
+      .statusCode(400);
+  }
+
+  @Test
+  @DisplayName("POST /customers -> birthdate is required")
+  void givenOneCustomerWithoutBirthdate_whenPostCustomers_thenReturn400() {
+    given()
+      .contentType(ContentType.JSON)
+      .body("""
+        {
+          "name": "John",
+          "state": "active"
+        }
+        """)
+      .when()
+      .post("/api/v1/customers")
+      .then()
+      .statusCode(400);
+  }
+
 }
