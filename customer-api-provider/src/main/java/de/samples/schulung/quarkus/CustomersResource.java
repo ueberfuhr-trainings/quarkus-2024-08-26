@@ -52,7 +52,11 @@ public class CustomersResource {
   @Path("/{uuid}")
   @Produces(MediaType.APPLICATION_JSON)
   public CustomerDto findCustomerById(@PathParam("uuid") UUID uuid) {
-    return customers.get(uuid);
+    final var customer = customers.get(uuid);
+    if (null == customer) {
+      throw new NotFoundException();
+    }
+    return customer;
   }
 
   // POST /customers mit Kunde ohne UUID -> 201 mit Kunde + Location Header
@@ -86,7 +90,10 @@ public class CustomersResource {
   @DELETE
   @Path("/{uuid}")
   public Response deleteCustomer(@PathParam("uuid") UUID uuid) {
-    customers.remove(uuid);
+    final var deletedCustomer = customers.remove(uuid);
+    if (null == deletedCustomer) {
+      throw new NotFoundException();
+    }
     return Response
       .noContent()
       .build();
