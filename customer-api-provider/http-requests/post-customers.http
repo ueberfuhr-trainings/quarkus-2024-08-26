@@ -1,0 +1,19 @@
+POST http://localhost:8080/api/v1/customers
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Tom",
+  "birthdate": "2010-10-05",
+  "state": "active"
+}
+
+> {%
+client.test("Customer created", () => {
+    client.assert(response.status === 201);
+})
+%}
+
+<> 2024-08-27T113629.201.json
+<> 2024-08-27T113619.201.json
+###
