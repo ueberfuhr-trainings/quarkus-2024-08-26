@@ -1,7 +1,9 @@
 package de.samples.schulung.quarkus;
 
+import de.samples.schulung.quarkus.ValidationGroups.Incoming;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.groups.ConvertGroup;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -70,7 +72,11 @@ public class CustomersResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createCustomer(@Valid CustomerDto customer) {
+  public Response createCustomer(
+    @Valid
+    @ConvertGroup(to = Incoming.class)
+    CustomerDto customer
+  ) {
     //assert null == customer.getUuid();
     customer.setUuid(UUID.randomUUID());
     if(null == customer.getState()) {
