@@ -31,6 +31,17 @@ class ApiTests {
 
   // GET /customers -> 200 + JSON
   @Test
+  @DisplayName("GET /customers (invalid state) -> 400")
+  void given_whenGetCustomersWithInvalidState_thenReturn400() {
+    given()
+      .when()
+      .get("/api/v1/customers?state=gelbekatze")
+      .then()
+      .statusCode(400);
+  }
+
+  // GET /customers -> 200 + JSON
+  @Test
   @DisplayName("GET /customers (XML) -> 406")
   void given_whenGetCustomersAsXml_thenReturn406() {
     // Setup - Test - Assertions
@@ -125,6 +136,77 @@ class ApiTests {
       .statusCode(201)
       .contentType(ContentType.JSON)
       .body("uuid", is(not(equalTo("db998f52-1db7-4f66-af42-365d9ac41df2"))));
+  }
+
+  @Test
+  @DisplayName("POST /customers -> name must have at least 3 chars")
+  void givenOneCustomerWithNameTooShort_whenPostCustomers_thenReturn400() {
+    given()
+      .contentType(ContentType.JSON)
+      .body("""
+        {
+          "name": "J",
+          "birthdate": "2004-05-02",
+          "state": "active"
+        }
+        """)
+      .when()
+      .post("/api/v1/customers")
+      .then()
+      .statusCode(400);
+  }
+
+  @Test
+  @DisplayName("POST /customers -> name must have at most 100 chars")
+  void givenOneCustomerWithNameTooLong_whenPostCustomers_thenReturn400() {
+    given()
+      .contentType(ContentType.JSON)
+      .body("""
+        {
+          "name": "J01234567890012345678900123456789001234567890012345678900123456789001234567890012345678900123456789001234567890",
+          "birthdate": "2004-05-02",
+          "state": "active"
+        }
+        """)
+      .when()
+      .post("/api/v1/customers")
+      .then()
+      .statusCode(400);
+  }
+
+  @Test
+  @DisplayName("POST /customers -> birthdate is required")
+  void givenOneCustomerWithoutBirthdate_whenPostCustomers_thenReturn400() {
+    given()
+      .contentType(ContentType.JSON)
+      .body("""
+        {
+          "name": "John",
+          "state": "active"
+        }
+        """)
+      .when()
+      .post("/api/v1/customers")
+      .then()
+      .statusCode(400);
+  }
+
+  @Test
+  @DisplayName("POST /customers -> state is enum")
+  void givenOneCustomerWithInvalidState_whenPostCustomers_thenReturn400() {
+    given()
+      .contentType(ContentType.JSON)
+      .body("""
+        {
+          "name": "John",
+          "birthdate": "2004-05-02",
+          "state": "gelbekatze"
+        }
+        """)
+      .when()
+      .post("/api/v1/customers")
+      .then()
+      .statusCode(400);
   }
 
 }
