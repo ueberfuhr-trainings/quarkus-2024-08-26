@@ -1,5 +1,6 @@
 package de.samples.schulung.quarkus;
 
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -64,8 +65,8 @@ public class CustomersResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createCustomer(CustomerDto customer) {
-    assert null == customer.getUuid();
+  public Response createCustomer(@Valid CustomerDto customer) {
+    //assert null == customer.getUuid();
     customer.setUuid(UUID.randomUUID());
     if(null == customer.getState()) {
       customer.setState("active");
