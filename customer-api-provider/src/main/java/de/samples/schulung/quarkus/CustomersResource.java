@@ -16,6 +16,7 @@ import java.util.UUID;
 public class CustomersResource {
 
   private final CustomersService service;
+  private final CustomerDtoMapper mapper;
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -27,8 +28,10 @@ public class CustomersResource {
     return (
       null == state
         ? service.getCustomers()
-        : service.findCustomersByState(state)
-    ).toList();
+        : service.findCustomersByState(mapper.mapState(state))
+    )
+      .map(mapper::map)
+      .toList();
   }
 
   // GET /customers/{id} -> 200 mit Customer
@@ -39,6 +42,7 @@ public class CustomersResource {
   public CustomerDto findCustomerById(@PathParam("uuid") UUID uuid) {
     return service
       .findCustomerByUuid(uuid)
+      .map(mapper::map)
       .orElseThrow(NotFoundException::new);
   }
 
@@ -47,11 +51,12 @@ public class CustomersResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createCustomer(@Valid CustomerDto customer) {
-    //assert null == customer.getUuid();
-    if(null == customer.getState()) {
-      customer.setState("active");
+  public Response createCustomer(@Valid CustomerDto customerDto) {
+    //assert null == customerDto.getUuid();
+    if(null == customerDto.getState()) {
+      customerDto.setState("active");
     }
+    var customer = mapper.map(customerDto);
     service.createCustomer(customer);
     final var location = UriBuilder
       .fromResource(CustomersResource.class)
@@ -66,7 +71,7 @@ public class CustomersResource {
      */
     return Response
       .created(location)
-      .entity(customer)
+      .entity(mapper.map(customer))
       .build();
   }
 

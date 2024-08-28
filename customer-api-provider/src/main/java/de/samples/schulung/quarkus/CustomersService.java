@@ -1,5 +1,6 @@
 package de.samples.schulung.quarkus;
 
+import de.samples.schulung.quarkus.Customer.CustomerState;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,44 +15,48 @@ import java.util.stream.Stream;
 @ApplicationScoped
 public class CustomersService {
 
-  private final Map<UUID, CustomerDto> customers = new HashMap<>();
+  private final Map<UUID, Customer> customers = new HashMap<>();
 
   {
-    var customer1 = new CustomerDto(
-      UUID.randomUUID(),
-      "Tom Mayer",
-      LocalDate.of(2006, Month.APRIL, 10),
-      "active"
+    this.createCustomer(
+      Customer
+      .builder()
+      .name("Tom Mayer")
+      .birthday(LocalDate.of(2006, Month.APRIL, 10))
+      .build()
     );
-    customers.put(customer1.getUuid(), customer1);
-    var customer2 = new CustomerDto(
-      UUID.randomUUID(),
-      "Julia Smith",
-      LocalDate.of(2010, Month.OCTOBER, 20),
-      "locked"
+
+    this.createCustomer(
+      Customer
+        .builder()
+        .name("Julia Smith")
+        .birthday(LocalDate.of(2010, Month.OCTOBER, 20))
+        .state(CustomerState.LOCKED)
+        .build()
     );
-    customers.put(customer2.getUuid(), customer2);
   }
 
-  // Todo: CustomerDto ersetzen
-
-  public Stream<CustomerDto> getCustomers() {
+  public Stream<Customer> getCustomers() {
     return customers
       .values()
       .stream();
   }
 
-  public Stream<CustomerDto> findCustomersByState(@NotNull String state) {
+  public Stream<Customer> findCustomersByState(@NotNull CustomerState state) {
     return getCustomers()
-      .filter(customer -> customer.getState().equals(state));
+      .filter(customer -> customer.getState() == state);
   }
 
-  public Optional<CustomerDto> findCustomerByUuid(@NotNull UUID uuid) {
+  public Optional<Customer> findCustomerByUuid(@NotNull UUID uuid) {
     return Optional.ofNullable(customers.get(uuid));
   }
 
-  public void createCustomer(@NotNull CustomerDto customer) {
+  public void createCustomer(@NotNull Customer customer) {
     customer.setUuid(UUID.randomUUID());
+    customers.put(customer.getUuid(), customer);
+  }
+
+  public void updateCustomer(@NotNull Customer customer) {
     customers.put(customer.getUuid(), customer);
   }
 
