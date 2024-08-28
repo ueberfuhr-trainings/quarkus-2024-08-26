@@ -8,3 +8,7 @@
 
 ![Testpyramide](02a-testpyramide.png)
 ![TDD](02b-tdd.png)
+
+# Validierung
+
+![Validierung](03-validierung.png)

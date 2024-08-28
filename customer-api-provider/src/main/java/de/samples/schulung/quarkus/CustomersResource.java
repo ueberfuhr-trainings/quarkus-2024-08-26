@@ -1,6 +1,7 @@
 package de.samples.schulung.quarkus;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -39,7 +40,11 @@ public class CustomersResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Collection<CustomerDto> getCustomers(@QueryParam("state") String state) {
+  public Collection<CustomerDto> getCustomers(
+    @QueryParam("state")
+    @Pattern(regexp = "active|locked|disabled")
+    String state
+  ) {
     return customers
       .values()
       .stream()
