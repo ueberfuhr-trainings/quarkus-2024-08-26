@@ -63,5 +63,25 @@ public class CustomersServiceTests {
     );
   }
 
+  @Test
+  @DisplayName("[Domain] create customer that is not an adult -> exception")
+  void givenOneCustomerTooYoung_whenCreateCustomer_thenThrowException() {
+    var customer = Customer
+      .builder()
+      .name("John")
+      .birthday(LocalDate.now().minusYears(17))
+      .build();
+    var count = customersService.getCount();
+    assertThatThrownBy(() -> customersService.createCustomer(customer))
+      .isInstanceOf(ValidationException.class);
+    assertAll(
+      () -> assertThat(customersService.getCount())
+        .isEqualTo(count),
+      () -> assertThat(customer)
+        .extracting(Customer::getUuid)
+        .isNull()
+    );
+  }
+
 
 }
