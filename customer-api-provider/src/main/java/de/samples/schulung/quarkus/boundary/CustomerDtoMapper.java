@@ -1,6 +1,7 @@
-package de.samples.schulung.quarkus;
+package de.samples.schulung.quarkus.boundary;
 
-import de.samples.schulung.quarkus.Customer.CustomerState;
+import de.samples.schulung.quarkus.domain.Customer;
+import de.samples.schulung.quarkus.domain.Customer.CustomerState;
 import jakarta.validation.ValidationException;
 import org.mapstruct.Mapper;
 

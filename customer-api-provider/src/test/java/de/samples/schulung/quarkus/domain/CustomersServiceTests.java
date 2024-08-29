@@ -1,4 +1,4 @@
-package de.samples.schulung.quarkus;
+package de.samples.schulung.quarkus.domain;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;

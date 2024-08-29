@@ -1,5 +1,7 @@
-package de.samples.schulung.quarkus;
+package de.samples.schulung.quarkus.boundary;
 
+import de.samples.schulung.quarkus.domain.Customer;
+import de.samples.schulung.quarkus.domain.CustomersService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -45,7 +47,7 @@ class ApiWithMockingTests {
   @DisplayName("[API-only] DELETE /customers/{uuid} -> 204")
   void given_whenDeleteCustomer_thenReturn204() {
     when(customerService.deleteCustomer(existingCustomer.getUuid()))
-        .thenReturn(true);
+      .thenReturn(true);
     given()
       .when()
       .delete(existingCustomerUri)

@@ -1,4 +1,4 @@
-package de.samples.schulung.quarkus;
+package de.samples.schulung.quarkus.shared;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
