@@ -20,7 +20,7 @@ import java.util.UUID;
 public class CustomerDto {
 
   @Setter(onMethod_ = @JsonbTransient)
-  // @Null(groups = ValidationGroups.ONLY_INCOMING)
+  @Null
   private UUID uuid;
   @Size(min = 3, max = 100)
   @NotNull

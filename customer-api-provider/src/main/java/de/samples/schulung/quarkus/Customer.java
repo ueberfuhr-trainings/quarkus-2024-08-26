@@ -1,7 +1,11 @@
 package de.samples.schulung.quarkus;
 
+import de.samples.schulung.quarkus.ValidationGroups.Existing;
+import de.samples.schulung.quarkus.ValidationGroups.New;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.groups.Default;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,15 +25,16 @@ public class Customer {
   }
 
   // TODO: wenn neu -> Null, wenn update -> NotNull
-  // @Null
+  @Null(groups = New.class)
+  @NotNull(groups = Existing.class)
   private UUID uuid;
-  @Size(min = 3, max = 100)
-  @NotNull
+  @Size(min = 3, max = 100, groups = {New.class, Existing.class, Default.class})
+  @NotNull(groups = {New.class, Existing.class, Default.class})
   private String name;
-  @NotNull
-  @Adult
+  @NotNull(groups = {New.class, Existing.class, Default.class})
+  @Adult(groups = {New.class, Existing.class, Default.class})
   private LocalDate birthday;
-  @NotNull
+  @NotNull(groups = {New.class, Existing.class, Default.class})
   @Builder.Default
   private CustomerState state = CustomerState.ACTIVE;
 
