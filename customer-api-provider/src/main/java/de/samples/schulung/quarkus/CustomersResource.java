@@ -6,37 +6,17 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
+import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Path("/api/v1/customers")
+@RequiredArgsConstructor
 public class CustomersResource {
 
-  // GET /customers?state=disabled -> 200 mit Liste der Kunden (JSON)
-
-  private final Map<UUID, CustomerDto> customers = new HashMap<>();
-
-  {
-    var customer1 = new CustomerDto(
-      UUID.randomUUID(),
-      "Tom Mayer",
-      LocalDate.of(2006, Month.APRIL, 10),
-      "active"
-    );
-    customers.put(customer1.getUuid(), customer1);
-    var customer2 = new CustomerDto(
-      UUID.randomUUID(),
-      "Julia Smith",
-      LocalDate.of(2010, Month.OCTOBER, 20),
-      "locked"
-    );
-    customers.put(customer2.getUuid(), customer2);
-  }
+  private final CustomersService service;
+  private final CustomerDtoMapper mapper;
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -45,10 +25,12 @@ public class CustomersResource {
     @Pattern(regexp = "active|locked|disabled")
     String state
   ) {
-    return customers
-      .values()
-      .stream()
-      .filter(c -> null == state || c.getState().equals(state))
+    return (
+      null == state
+        ? service.getCustomers()
+        : service.findCustomersByState(mapper.mapState(state))
+    )
+      .map(mapper::map)
       .toList();
   }
 
@@ -58,11 +40,10 @@ public class CustomersResource {
   @Path("/{uuid}")
   @Produces(MediaType.APPLICATION_JSON)
   public CustomerDto findCustomerById(@PathParam("uuid") UUID uuid) {
-    final var customer = customers.get(uuid);
-    if (null == customer) {
-      throw new NotFoundException();
-    }
-    return customer;
+    return service
+      .findCustomerByUuid(uuid)
+      .map(mapper::map)
+      .orElseThrow(NotFoundException::new);
   }
 
   // POST /customers mit Kunde ohne UUID -> 201 mit Kunde + Location Header
@@ -70,13 +51,13 @@ public class CustomersResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createCustomer(@Valid CustomerDto customer) {
-    //assert null == customer.getUuid();
-    customer.setUuid(UUID.randomUUID());
-    if(null == customer.getState()) {
-      customer.setState("active");
+  public Response createCustomer(@Valid CustomerDto customerDto) {
+    //assert null == customerDto.getUuid();
+    if(null == customerDto.getState()) {
+      customerDto.setState("active");
     }
-    customers.put(customer.getUuid(), customer);
+    var customer = mapper.map(customerDto);
+    service.createCustomer(customer);
     final var location = UriBuilder
       .fromResource(CustomersResource.class)
       .path(CustomersResource.class, "findCustomerById")
@@ -90,15 +71,14 @@ public class CustomersResource {
      */
     return Response
       .created(location)
-      .entity(customer)
+      .entity(mapper.map(customer))
       .build();
   }
 
   @DELETE
   @Path("/{uuid}")
   public void deleteCustomer(@PathParam("uuid") UUID uuid) {
-    final var deletedCustomer = customers.remove(uuid);
-    if (null == deletedCustomer) {
+    if (!service.deleteCustomer(uuid)) {
       throw new NotFoundException();
     }
   }
