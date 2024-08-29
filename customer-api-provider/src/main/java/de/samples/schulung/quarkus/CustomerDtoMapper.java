@@ -1,41 +1,18 @@
 package de.samples.schulung.quarkus;
 
-// TODO: MapStruct
-
 import de.samples.schulung.quarkus.Customer.CustomerState;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.ValidationException;
+import org.mapstruct.Mapper;
 
-@ApplicationScoped
-public class CustomerDtoMapper {
+@Mapper(componentModel = "cdi")
+public interface CustomerDtoMapper {
 
-  public CustomerDto map(Customer customer) {
-    if(null == customer) {
-      return null;
-    }
-    var result = new CustomerDto();
-    result.setName(customer.getName());
-    result.setUuid(customer.getUuid());
-    result.setBirthday(customer.getBirthday());
-    result.setState(mapState(customer.getState()));
-    return result;
-  }
+  CustomerDto map(Customer customer);
 
-  public Customer map(CustomerDto dto) {
-    if(null == dto) {
-      return null;
-    }
-    return Customer
-      .builder()
-      .name(dto.getName())
-      .uuid(dto.getUuid())
-      .birthday(dto.getBirthday())
-      .state(mapState(dto.getState()))
-      .build();
-  }
+  Customer map(CustomerDto dto);
 
-  public String mapState(CustomerState state) {
-    if(null == state) {
+  default String mapState(CustomerState state) {
+    if (null == state) {
       return null;
     }
     return switch (state) {
@@ -45,8 +22,8 @@ public class CustomerDtoMapper {
     };
   }
 
-  public CustomerState mapState(String state) {
-    if(null == state) {
+  default CustomerState mapState(String state) {
+    if (null == state) {
       return null;
     }
     return switch (state) {
