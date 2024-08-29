@@ -20,10 +20,12 @@ import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @QuarkusTest
 class CustomersLoggingTests {
@@ -47,13 +49,28 @@ class CustomersLoggingTests {
 
   @DisplayName("[INFRA] Customer created -> Logging")
   @Test
-  void shouldLogWhenCustomerCreated() {
+  void shouldLogWhenCustomerCreated() throws InterruptedException {
     reset(log); // already logged during startup (initialization)!
+
+    // we invoke the logging asynchronously -> we join with a count down latch
+    final var lock = new CountDownLatch(1);
+    // count down when the info() method is invoked
+    doAnswer(invocation -> {
+      lock.countDown();
+      return null;
+    })
+      .when(log).info(anyString());
+
     var customer = Customer.builder()
       .name("Tom")
       .birthday(LocalDate.of(2000, Month.FEBRUARY, 2))
       .build();
     service.createCustomer(customer);
+
+    // wait until logging is done asynchronously
+    assertThat(lock.await(1, TimeUnit.SECONDS))
+      .describedAs("Asynchronous logging did not occur within 1 second")
+      .isTrue(); // did it count back to 0?
 
     verify(log).info(anyString());
 
