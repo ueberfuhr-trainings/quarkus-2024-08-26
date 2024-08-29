@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.is;
 
 @QuarkusTest
 class ApiNonExistingCustomerTests {
@@ -26,7 +27,7 @@ class ApiNonExistingCustomerTests {
   }
 
   @Test
-  @DisplayName("GET /customers/{uuid} -> 404")
+  @DisplayName("[API] GET /customers/{uuid} -> 404")
   void given_whenGetCustomer_thenReturn404() {
     given()
       .when()
@@ -36,7 +37,7 @@ class ApiNonExistingCustomerTests {
   }
 
   @Test
-  @DisplayName("DELETE /customers/{uuid} -> 404")
+  @DisplayName("[API] DELETE /customers/{uuid} -> 404")
   void given_whenDeleteCustomer_thenReturn404() {
     given()
       .when()

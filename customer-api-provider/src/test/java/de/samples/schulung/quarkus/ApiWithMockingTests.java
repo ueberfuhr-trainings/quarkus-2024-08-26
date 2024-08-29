@@ -42,7 +42,7 @@ class ApiWithMockingTests {
 
   // DELETE /customers/{uuid} -> 204
   @Test
-  @DisplayName("DELETE /customers/{uuid} -> 204")
+  @DisplayName("[API-only] DELETE /customers/{uuid} -> 204")
   void given_whenDeleteCustomer_thenReturn204() {
     when(customerService.deleteCustomer(existingCustomer.getUuid()))
         .thenReturn(true);
@@ -55,7 +55,7 @@ class ApiWithMockingTests {
 
   // DELETE /customers/{uuid} -> 204
   @Test
-  @DisplayName("GET /customers/{uuid} -> 200+JSON")
+  @DisplayName("[API-only] GET /customers/{uuid} -> 200+JSON")
   void given_whenGetCustomer_thenReturn200() {
     when(customerService.findCustomerByUuid(existingCustomer.getUuid()))
       .thenReturn(Optional.of(existingCustomer));
@@ -70,7 +70,7 @@ class ApiWithMockingTests {
   }
 
   @Test
-  @DisplayName("GET /customers/{uuid} -> 404")
+  @DisplayName("[API-only] GET /customers/{uuid} -> 404")
   void given_whenGetCustomer_thenReturn404() {
     when(customerService.findCustomerByUuid(any()))
       .thenReturn(Optional.empty());
@@ -82,7 +82,7 @@ class ApiWithMockingTests {
   }
 
   @Test
-  @DisplayName("POST /customers -> name must have at least 3 chars")
+  @DisplayName("[API-only] POST /customers -> name must have at least 3 chars")
   void givenOneCustomerWithNameTooShort_whenPostCustomers_thenReturn400() {
     given()
       .contentType(ContentType.JSON)

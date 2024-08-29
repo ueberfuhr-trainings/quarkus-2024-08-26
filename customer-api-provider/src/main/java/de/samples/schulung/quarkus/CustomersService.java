@@ -2,6 +2,7 @@ package de.samples.schulung.quarkus;
 
 import de.samples.schulung.quarkus.Customer.CustomerState;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
@@ -20,10 +21,10 @@ public class CustomersService {
   {
     this.createCustomer(
       Customer
-      .builder()
-      .name("Tom Mayer")
-      .birthday(LocalDate.of(2006, Month.APRIL, 10))
-      .build()
+        .builder()
+        .name("Tom Mayer")
+        .birthday(LocalDate.of(2006, Month.APRIL, 10))
+        .build()
     );
 
     this.createCustomer(
@@ -34,6 +35,10 @@ public class CustomersService {
         .state(CustomerState.LOCKED)
         .build()
     );
+  }
+
+  public long getCount() {
+    return customers.size();
   }
 
   public Stream<Customer> getCustomers() {
@@ -51,12 +56,12 @@ public class CustomersService {
     return Optional.ofNullable(customers.get(uuid));
   }
 
-  public void createCustomer(@NotNull Customer customer) {
+  public void createCustomer(@Valid @NotNull Customer customer) {
     customer.setUuid(UUID.randomUUID());
     customers.put(customer.getUuid(), customer);
   }
 
-  public void updateCustomer(@NotNull Customer customer) {
+  public void updateCustomer(@Valid @NotNull Customer customer) {
     customers.put(customer.getUuid(), customer);
   }
 
