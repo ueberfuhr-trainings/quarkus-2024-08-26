@@ -21,3 +21,7 @@
 # Layers
 
 ![Layers](05-layers.png)
+
+# Interceptors
+
+![Proxy Objects](06-interceptors.png)
