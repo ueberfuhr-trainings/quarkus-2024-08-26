@@ -1,9 +1,9 @@
 package de.samples.schulung.quarkus;
 
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
 public class ValidationGroups {
+
+  private ValidationGroups() {
+  }
 
   // Validation Group
   public interface New {
