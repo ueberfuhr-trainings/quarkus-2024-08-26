@@ -1,6 +1,7 @@
 package de.samples.schulung.quarkus.domain;
 
 import de.samples.schulung.quarkus.domain.Customer.CustomerState;
+import de.samples.schulung.quarkus.shared.LogPerformance;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
 import jakarta.validation.Valid;
@@ -39,7 +40,8 @@ public class CustomersService {
   public Optional<Customer> findCustomerByUuid(@NotNull UUID uuid) {
     return Optional.ofNullable(customers.get(uuid));
   }
-
+ 
+  @LogPerformance
   public void createCustomer(@Valid @NotNull Customer customer) {
     customer.setUuid(UUID.randomUUID());
     customers.put(customer.getUuid(), customer);
