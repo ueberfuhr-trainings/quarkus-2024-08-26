@@ -1,5 +1,6 @@
-package de.samples.schulung.quarkus;
+package de.samples.schulung.quarkus.boundary;
 
+import de.samples.schulung.quarkus.shared.Adult;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.validation.constraints.NotNull;

@@ -17,3 +17,7 @@
 
 ![Dependency Injection](04a-dependency-injection.png)
 ![Container](04b-container.png)
+
+# Layers
+
+![Layers](05-layers.png)

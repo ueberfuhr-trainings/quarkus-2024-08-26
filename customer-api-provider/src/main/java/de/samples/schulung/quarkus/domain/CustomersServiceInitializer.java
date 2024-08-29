@@ -1,6 +1,6 @@
-package de.samples.schulung.quarkus;
+package de.samples.schulung.quarkus.domain;
 
-import de.samples.schulung.quarkus.Customer.CustomerState;
+import de.samples.schulung.quarkus.domain.Customer.CustomerState;
 import io.quarkus.arc.properties.IfBuildProperty;
 import io.quarkus.runtime.Startup;
 import jakarta.enterprise.context.Dependent;

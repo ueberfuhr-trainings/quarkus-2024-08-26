@@ -1,4 +1,4 @@
-package de.samples.schulung.quarkus;
+package de.samples.schulung.quarkus.boundary;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
