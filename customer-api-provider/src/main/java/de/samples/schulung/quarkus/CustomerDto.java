@@ -4,7 +4,6 @@ import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,8 +27,9 @@ public class CustomerDto {
   private String name;
   @JsonbProperty("birthdate")
   @NotNull
+  @Adult
   private LocalDate birthday;
-  @Pattern(regexp = "active|locked|disabled")
+  @JsonCustomerState
   private String state;
 
 }

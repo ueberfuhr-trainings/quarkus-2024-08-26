@@ -36,7 +36,7 @@ class ApiExistingCustomerTests {
 
   // DELETE /customers/{uuid} -> 204
   @Test
-  @DisplayName("DELETE /customers/{uuid} -> 204")
+  @DisplayName("[API] DELETE /customers/{uuid} -> 204")
   void given_whenDeleteCustomer_thenReturn204() {
     given()
       .when()
@@ -47,7 +47,7 @@ class ApiExistingCustomerTests {
 
   // DELETE /customers/{uuid} -> 204
   @Test
-  @DisplayName("GET /customers/{uuid} -> 200+JSON")
+  @DisplayName("[API] GET /customers/{uuid} -> 200+JSON")
   void given_whenGetCustomer_thenReturn200() {
     given()
       .when()

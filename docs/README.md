@@ -12,3 +12,8 @@
 # Validierung
 
 ![Validierung](03-validierung.png)
+
+# Dependency Injection
+
+![Dependency Injection](04a-dependency-injection.png)
+![Container](04b-container.png)
