@@ -1,7 +1,6 @@
 package de.samples.schulung.quarkus;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -22,7 +21,7 @@ public class CustomersResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Collection<CustomerDto> getCustomers(
     @QueryParam("state")
-    @Pattern(regexp = "active|locked|disabled")
+    @JsonCustomerState
     String state
   ) {
     return (
@@ -53,7 +52,7 @@ public class CustomersResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response createCustomer(@Valid CustomerDto customerDto) {
     //assert null == customerDto.getUuid();
-    if(null == customerDto.getState()) {
+    if (null == customerDto.getState()) {
       customerDto.setState("active");
     }
     var customer = mapper.map(customerDto);

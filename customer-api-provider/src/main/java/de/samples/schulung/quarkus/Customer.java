@@ -27,6 +27,7 @@ public class Customer {
   @NotNull
   private String name;
   @NotNull
+  @Adult
   private LocalDate birthday;
   @NotNull
   @Builder.Default
