@@ -1,5 +1,6 @@
-package de.samples.schulung.quarkus;
+package de.samples.schulung.quarkus.boundary;
 
+import de.samples.schulung.quarkus.domain.CustomersService;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

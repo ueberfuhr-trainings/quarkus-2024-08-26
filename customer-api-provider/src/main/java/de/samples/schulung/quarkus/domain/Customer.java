@@ -2,6 +2,7 @@ package de.samples.schulung.quarkus;
 
 import de.samples.schulung.quarkus.ValidationGroups.Existing;
 import de.samples.schulung.quarkus.ValidationGroups.New;
+import de.samples.schulung.quarkus.shared.Adult;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
