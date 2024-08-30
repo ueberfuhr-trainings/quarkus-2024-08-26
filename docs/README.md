@@ -20,7 +20,8 @@
 
 # Layers
 
-![Layers](05-layers.png)
+![Layers](05a-layers.png)
+![Layers mit Persistence](05b-layers-persistence.png)
 
 # Interceptors
 
