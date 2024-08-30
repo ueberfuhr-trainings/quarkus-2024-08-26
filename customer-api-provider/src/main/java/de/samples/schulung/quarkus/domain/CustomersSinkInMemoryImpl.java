@@ -2,6 +2,7 @@ package de.samples.schulung.quarkus.domain;
 
 import io.quarkus.arc.DefaultBean;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Typed;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.stream.Stream;
 
 @ApplicationScoped
 @DefaultBean
+@Typed(CustomersSink.class)
 public class CustomersSinkInMemoryImpl implements CustomersSink {
 
   private final Map<UUID, Customer> customers = new HashMap<>();

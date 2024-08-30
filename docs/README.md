@@ -27,3 +27,7 @@
 
 ![Proxy Objects](06a-interceptors.png)
 ![Log Performance Level](06b-log-performance-level.png)
+
+# Database
+
+![DB APIs](07-db-apis.png)
