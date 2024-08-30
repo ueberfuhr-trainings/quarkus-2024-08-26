@@ -6,57 +6,52 @@ import de.samples.schulung.quarkus.shared.LogPerformance;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.jboss.logging.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
 @ApplicationScoped
+@RequiredArgsConstructor
 public class CustomersService {
 
-  private final Map<UUID, Customer> customers = new HashMap<>();
+    private final CustomersSink sink;
 
-  public long getCount() {
-    return customers.size();
-  }
+    public long getCount() {
+        return sink.count();
+    }
 
-  public Stream<Customer> getCustomers() {
-    return customers
-      .values()
-      .stream();
-  }
+    public Stream<Customer> getCustomers() {
+        return sink.findAll();
+    }
 
-  public Stream<Customer> findCustomersByState(@NotNull CustomerState state) {
-    return getCustomers()
-      .filter(customer -> customer.getState() == state);
-  }
+    public Stream<Customer> findCustomersByState(@NotNull CustomerState state) {
+        return sink.findByState(state);
+    }
 
-  public Optional<Customer> findCustomerByUuid(@NotNull UUID uuid) {
-    return Optional.ofNullable(customers.get(uuid));
-  }
+    public Optional<Customer> findCustomerByUuid(@NotNull UUID uuid) {
+        return sink.findByUuid(uuid);
+    }
 
-  @LogPerformance(Logger.Level.DEBUG)
-  @FireEvent(CustomerCreatedEvent.class)
-  public void createCustomer(@Valid @NotNull Customer customer) {
-    customer.setUuid(UUID.randomUUID());
-    customers.put(customer.getUuid(), customer);
-  }
+    @LogPerformance(Logger.Level.DEBUG)
+    @FireEvent(CustomerCreatedEvent.class)
+    public void createCustomer(@Valid @NotNull Customer customer) {
+        sink.insert(customer);
+    }
 
-  public void updateCustomer(@Valid @NotNull Customer customer) {
-    customers.put(customer.getUuid(), customer);
-  }
+    public void updateCustomer(@Valid @NotNull Customer customer) {
+        sink.update(customer);
+    }
 
-  public boolean deleteCustomer(@NotNull UUID uuid) {
-    // Eigene Exception werfen?
-    return null != customers.remove(uuid);
-  }
+    public boolean deleteCustomer(@NotNull UUID uuid) {
+        return sink.delete(uuid);
+    }
 
-  public boolean existsCustomer(@NotNull UUID uuid) {
-    return customers.containsKey(uuid);
-  }
+    public boolean existsCustomer(@NotNull UUID uuid) {
+        return sink.existsByUuid(uuid);
+    }
 
 }
 
