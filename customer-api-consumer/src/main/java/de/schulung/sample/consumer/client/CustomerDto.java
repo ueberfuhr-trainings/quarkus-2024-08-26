@@ -1,6 +1,6 @@
 package de.schulung.sample.consumer.client;
 
-import jakarta.json.bind.annotation.JsonbTransient;
+import jakarta.json.bind.annotation.JsonbProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,12 +15,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CustomerDto {
 
-  // readonly property
-  @Setter(onMethod_ = @JsonbTransient)
-  private UUID uuid;
-  private String name;
-  //@JsonbProperty("birth_date")
-  private LocalDate birthDate;
-  private String state;
+    private UUID uuid;
+    private String name;
+    @JsonbProperty("birthdate")
+    private LocalDate birthDate;
+    private String state;
 
 }
