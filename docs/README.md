@@ -26,3 +26,7 @@
 # Interceptors
 
 ![Proxy Objects](06-interceptors.png)
+
+# Database
+
+![DB APIs](07-db-apis.png)
