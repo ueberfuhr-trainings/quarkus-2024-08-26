@@ -20,8 +20,14 @@
 
 # Layers
 
-![Layers](05-layers.png)
+![Layers](05a-layers.png)
+![Layers mit Persistence](05b-layers-persistence.png)
 
 # Interceptors
 
-![Proxy Objects](06-interceptors.png)
+![Proxy Objects](06a-interceptors.png)
+![Log Performance Level](06b-log-performance-level.png)
+
+# Database
+
+![DB APIs](07-db-apis.png)
