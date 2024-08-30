@@ -28,6 +28,7 @@ public class CustomerEntity {
   @Column(name = "BIRTH_DATE")
   private LocalDate birthday;
   @NotNull
+  //@Enumerated(EnumType.STRING)
   private CustomerState state = CustomerState.ACTIVE;
 
 }
