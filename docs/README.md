@@ -25,4 +25,5 @@
 
 # Interceptors
 
-![Proxy Objects](06-interceptors.png)
+![Proxy Objects](06a-interceptors.png)
+![Log Performance Level](06b-log-performance-level.png)
