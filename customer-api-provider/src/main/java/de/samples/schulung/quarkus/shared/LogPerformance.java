@@ -1,6 +1,8 @@
 package de.samples.schulung.quarkus.shared;
 
+import jakarta.enterprise.util.Nonbinding;
 import jakarta.interceptor.InterceptorBinding;
+import org.jboss.logging.Logger;
 
 import java.lang.annotation.*;
 
@@ -14,6 +16,7 @@ import java.lang.annotation.*;
 @InterceptorBinding
 public @interface LogPerformance {
 
-    // TODO Level konfigurierbar?
+    @Nonbinding
+    Logger.Level value() default Logger.Level.INFO;
 
 }

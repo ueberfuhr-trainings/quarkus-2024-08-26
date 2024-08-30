@@ -2,24 +2,17 @@ package de.samples.schulung.quarkus.infrastructure;
 
 import de.samples.schulung.quarkus.domain.Customer;
 import de.samples.schulung.quarkus.domain.CustomersService;
+import de.samples.schulung.quarkus.utilities.ProfileWithMockedLogger;
 import io.quarkus.arc.log.LoggerName;
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.annotation.PreDestroy;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.inject.Produces;
-import jakarta.enterprise.inject.spi.InjectionPoint;
+import io.quarkus.test.junit.TestProfile;
 import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +21,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @QuarkusTest
+@TestProfile(ProfileWithMockedLogger.class)
 class CustomersLoggingTests {
 
   /*
@@ -73,40 +67,6 @@ class CustomersLoggingTests {
       .isTrue(); // did it count back to 0?
 
     verify(log).info(anyString());
-
-  }
-
-  // just for this class, not for all tests!
-  @ApplicationScoped
-  static class LoggerMocksProducer {
-    private final Map<String, Logger> loggers = new HashMap<>();
-
-    private Optional<LoggerName> findLoggerName(InjectionPoint injectionPoint) {
-      return injectionPoint.getQualifiers()
-        .stream()
-        .filter(q -> q.annotationType().equals(LoggerName.class))
-        .findFirst()
-        .map(LoggerName.class::cast);
-    }
-
-    private Logger createLogger(String name) {
-      return Mockito.mock(Logger.class);
-    }
-
-    @Produces
-    @Dependent
-    @LoggerName("")
-    Logger getMockedLogger(InjectionPoint injectionPoint) {
-      return findLoggerName(injectionPoint)
-        .map(LoggerName::value)
-        .map(name -> loggers.computeIfAbsent(name, this::createLogger))
-        .orElseThrow(() -> new IllegalStateException("Unable to derive the logger name at " + injectionPoint));
-    }
-
-    @PreDestroy
-    void clear() {
-      loggers.clear();
-    }
 
   }
 

@@ -15,14 +15,27 @@ public class LogPerformanceInterceptor {
   @LoggerName("performance")
   Logger logger;
 
+  private Logger.Level findLevel(InvocationContext ic) {
+    return AnnotationUtils
+      .findAnnotation(ic.getMethod(), LogPerformance.class)
+      .map(LogPerformance::value)
+      .orElse(Logger.Level.INFO);
+  }
+
   @AroundInvoke
   public Object logPerformance(InvocationContext invocationContext) throws Exception {
+    final var methodName = invocationContext.getMethod().getName();
+    final var level = findLevel(invocationContext);
     var ts1 = System.currentTimeMillis();
     try {
       return invocationContext.proceed(); // Weiterleitung an das Original
     } finally {
       var ts2 = System.currentTimeMillis();
-      logger.info("Dauer der Methode '" + invocationContext.getMethod().getName() + "': " + (ts2 - ts1) + "ms");
+      logger.logf(
+        level,
+        "Dauer der Methode '%s': %d ms",
+        new Object[]{methodName, ts2 - ts1}
+      );
     }
   }
 
