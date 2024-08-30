@@ -1,4 +1,4 @@
-package de.samples.schulung.quarkus;
+package de.samples.schulung.quarkus.domain;
 
 import de.samples.schulung.quarkus.ValidationGroups.Existing;
 import de.samples.schulung.quarkus.ValidationGroups.New;

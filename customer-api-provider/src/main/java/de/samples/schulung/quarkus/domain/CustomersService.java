@@ -1,11 +1,13 @@
 package de.samples.schulung.quarkus.domain;
 
+import de.samples.schulung.quarkus.ValidationGroups;
 import de.samples.schulung.quarkus.domain.Customer.CustomerState;
 import de.samples.schulung.quarkus.shared.FireEvent;
 import de.samples.schulung.quarkus.shared.LogPerformance;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.groups.ConvertGroup;
 import org.jboss.logging.Logger;
 
 import java.util.HashMap;
@@ -40,12 +42,22 @@ public class CustomersService {
 
   @LogPerformance(Logger.Level.DEBUG)
   @FireEvent(CustomerCreatedEvent.class)
-  public void createCustomer(@Valid @NotNull Customer customer) {
+  public void createCustomer(
+    @Valid
+    @NotNull
+    @ConvertGroup(to = ValidationGroups.New.class)
+    Customer customer
+  ) {
     customer.setUuid(UUID.randomUUID());
     customers.put(customer.getUuid(), customer);
   }
 
-  public void updateCustomer(@Valid @NotNull Customer customer) {
+  public void updateCustomer(
+    @Valid
+    @NotNull
+    @ConvertGroup(to = ValidationGroups.Existing.class)
+    Customer customer
+  ) {
     customers.put(customer.getUuid(), customer);
   }
 
