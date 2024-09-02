@@ -3,17 +3,19 @@ package de.samples.schulung.quarkus.boundary;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
+@Tag("API")
 class ApiTests {
 
   // GET /customers -> 200 + JSON
   @Test
-  @DisplayName("[API] GET /customers -> 200")
+  @DisplayName("GET /customers -> 200")
   void given_whenGetCustomers_thenReturn200_andContentTypeJson() {
     // Setup - Test - Assertions
     // Arrange - Act - Assert
@@ -31,7 +33,7 @@ class ApiTests {
 
   // GET /customers -> 200 + JSON
   @Test
-  @DisplayName("[API] GET /customers (invalid state) -> 400")
+  @DisplayName("GET /customers (invalid state) -> 400")
   void given_whenGetCustomersWithInvalidState_thenReturn400() {
     given()
       .when()
@@ -42,7 +44,7 @@ class ApiTests {
 
   // GET /customers -> 200 + JSON
   @Test
-  @DisplayName("[API] GET /customers (XML) -> 406")
+  @DisplayName("GET /customers (XML) -> 406")
   void given_whenGetCustomersAsXml_thenReturn406() {
     // Setup - Test - Assertions
     // Arrange - Act - Assert
@@ -56,7 +58,7 @@ class ApiTests {
   }
 
   @Test
-  @DisplayName("[API] POST /customers -> 201")
+  @DisplayName("POST /customers -> 201")
   void givenOneCustomer_whenPostCustomers_thenReturn200_andLocationHeaderExists() {
     given()
       .contentType(ContentType.JSON)
@@ -79,7 +81,7 @@ class ApiTests {
   }
 
   @Test
-  @DisplayName("[API] POST /customers (XML) -> 415")
+  @DisplayName("POST /customers (XML) -> 415")
   void givenOneCustomerAsXml_whenPostCustomers_thenReturn415() {
     given()
       .contentType(ContentType.XML)
@@ -98,7 +100,7 @@ class ApiTests {
 
 
   @Test
-  @DisplayName("[API] POST /customers -> Default State")
+  @DisplayName("POST /customers -> Default State")
   void givenOneCustomerWithoutState_whenPostCustomers_thenReturnCustomerWithStateActive() {
     given()
       .contentType(ContentType.JSON)
@@ -117,7 +119,7 @@ class ApiTests {
   }
 
   @Test
-  @DisplayName("[API] POST /customers -> UUID readonly")
+  @DisplayName("POST /customers -> UUID readonly")
   void givenOneCustomerWithUuid_whenPostCustomers_thenReturnGeneratedId() {
     given()
       .contentType(ContentType.JSON)
@@ -139,7 +141,7 @@ class ApiTests {
   }
 
   @Test
-  @DisplayName("[API] POST /customers -> name must have at least 3 chars")
+  @DisplayName("POST /customers -> name must have at least 3 chars")
   void givenOneCustomerWithNameTooShort_whenPostCustomers_thenReturn400() {
     given()
       .contentType(ContentType.JSON)
@@ -157,7 +159,7 @@ class ApiTests {
   }
 
   @Test
-  @DisplayName("[API] POST /customers -> name must have at most 100 chars")
+  @DisplayName("POST /customers -> name must have at most 100 chars")
   void givenOneCustomerWithNameTooLong_whenPostCustomers_thenReturn400() {
     given()
       .contentType(ContentType.JSON)
@@ -175,7 +177,7 @@ class ApiTests {
   }
 
   @Test
-  @DisplayName("[API] POST /customers -> birthdate is required")
+  @DisplayName("POST /customers -> birthdate is required")
   void givenOneCustomerWithoutBirthdate_whenPostCustomers_thenReturn400() {
     given()
       .contentType(ContentType.JSON)
@@ -192,7 +194,7 @@ class ApiTests {
   }
 
   @Test
-  @DisplayName("[API] POST /customers -> state is enum")
+  @DisplayName("POST /customers -> state is enum")
   void givenOneCustomerWithInvalidState_whenPostCustomers_thenReturn400() {
     given()
       .contentType(ContentType.JSON)

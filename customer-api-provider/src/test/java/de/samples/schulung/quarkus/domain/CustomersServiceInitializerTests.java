@@ -6,12 +6,14 @@ import io.quarkus.test.junit.TestProfile;
 import jakarta.inject.Inject;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
 @QuarkusTest
 @TestProfile(CustomersServiceInitializerTests.ProfileForThisTest.class)
+@Tag("Domain")
 public class CustomersServiceInitializerTests {
 
   @Inject
@@ -28,7 +30,7 @@ public class CustomersServiceInitializerTests {
   }
 
   @Test
-  @DisplayName("[Domain] Sample customers initialized")
+  @DisplayName("Sample customers initialized")
   void given_when_thenSampleCustomersExist() {
     Assertions.assertThat(customerService.getCount())
       .isGreaterThan(0L);

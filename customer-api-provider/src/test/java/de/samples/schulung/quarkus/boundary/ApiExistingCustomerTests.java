@@ -4,12 +4,14 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
+@Tag("API")
 class ApiExistingCustomerTests {
 
   String existingCustomerUri;
@@ -36,7 +38,7 @@ class ApiExistingCustomerTests {
 
   // DELETE /customers/{uuid} -> 204
   @Test
-  @DisplayName("[API] DELETE /customers/{uuid} -> 204")
+  @DisplayName("DELETE /customers/{uuid} -> 204")
   void given_whenDeleteCustomer_thenReturn204() {
     given()
       .when()
@@ -47,7 +49,7 @@ class ApiExistingCustomerTests {
 
   // DELETE /customers/{uuid} -> 204
   @Test
-  @DisplayName("[API] GET /customers/{uuid} -> 200+JSON")
+  @DisplayName("GET /customers/{uuid} -> 200+JSON")
   void given_whenGetCustomer_thenReturn200() {
     given()
       .when()

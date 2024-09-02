@@ -4,6 +4,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -14,13 +15,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @QuarkusTest
+@Tag("Domain")
 public class CustomersServiceTests {
 
   @Inject
   CustomersService customersService;
 
   @Test
-  @DisplayName("[Domain] create customer -> customer can be read")
+  @DisplayName("create customer -> customer can be read")
   void givenOneCustomer_whenCreateCustomer_thenFindCustomer() {
     var customer = Customer
       .builder()
@@ -44,7 +46,7 @@ public class CustomersServiceTests {
   // validation, and we cannot find it then (count has same size), and it has no uuid
 
   @Test
-  @DisplayName("[Domain] create customer with invalid name -> exception")
+  @DisplayName("create customer with invalid name -> exception")
   void givenOneCustomerWithInvalidName_whenCreateCustomer_thenThrowException() {
     var customer = Customer
       .builder()
@@ -64,7 +66,7 @@ public class CustomersServiceTests {
   }
 
   @Test
-  @DisplayName("[Domain] create customer that is not an adult -> exception")
+  @DisplayName("create customer that is not an adult -> exception")
   void givenOneCustomerTooYoung_whenCreateCustomer_thenThrowException() {
     var customer = Customer
       .builder()

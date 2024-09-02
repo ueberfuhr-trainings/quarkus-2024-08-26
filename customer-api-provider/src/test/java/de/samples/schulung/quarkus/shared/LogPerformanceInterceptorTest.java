@@ -9,6 +9,7 @@ import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 
 @QuarkusTest
 @TestProfile(ProfileWithMockedLogger.class)
+@Tag("shared")
 public class LogPerformanceInterceptorTest {
 
   @Inject
@@ -30,14 +32,14 @@ public class LogPerformanceInterceptorTest {
   }
 
   @Test
-  @DisplayName("[SHARED] No @LogPerformance -> no logging")
+  @DisplayName("No @LogPerformance -> no logging")
   void given_whenNoAnnotation_thenDoNotLog() {
     sampleBean.dontLog();
     verifyNoInteractions(logger);
   }
 
   @Test
-  @DisplayName("[SHARED] @LogPerformance -> default level logging")
+  @DisplayName("@LogPerformance -> default level logging")
   void given_whenAnnotation_thenLogDefaultLevel() {
     sampleBean.logDefaultLevel();
     Mockito.verify(logger).logf(
@@ -48,7 +50,7 @@ public class LogPerformanceInterceptorTest {
   }
 
   @Test
-  @DisplayName("[SHARED] @LogPerformance(DEBUG) -> debug logging")
+  @DisplayName("@LogPerformance(DEBUG) -> debug logging")
   void given_whenAnnotationWithDebugLevel_thenLogDebugLevel() {
     sampleBean.logDebugLevel();
     Mockito.verify(logger).logf(

@@ -3,6 +3,7 @@ package de.samples.schulung.quarkus.boundary;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -12,6 +13,7 @@ import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
 @QuarkusTest
+@Tag("API")
 class ApiNonExistingCustomerTests {
 
   String nonExistingCustomerUri;
@@ -27,7 +29,7 @@ class ApiNonExistingCustomerTests {
   }
 
   @Test
-  @DisplayName("[API] GET /customers/{uuid} -> 404")
+  @DisplayName("GET /customers/{uuid} -> 404")
   void given_whenGetCustomer_thenReturn404() {
     given()
       .when()
@@ -37,7 +39,7 @@ class ApiNonExistingCustomerTests {
   }
 
   @Test
-  @DisplayName("[API] DELETE /customers/{uuid} -> 404")
+  @DisplayName("DELETE /customers/{uuid} -> 404")
   void given_whenDeleteCustomer_thenReturn404() {
     given()
       .when()

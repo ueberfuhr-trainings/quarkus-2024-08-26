@@ -9,6 +9,7 @@ import io.quarkus.test.junit.TestProfile;
 import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.*;
 
 @QuarkusTest
 @TestProfile(ProfileWithMockedLogger.class)
+@Tag("Infrastructure")
 class CustomersLoggingTests {
 
   /*
@@ -41,7 +43,7 @@ class CustomersLoggingTests {
   @LoggerName("customers-service")
   Logger log;
 
-  @DisplayName("[INFRA] Customer created -> Logging")
+  @DisplayName("Customer created -> Logging")
   @Test
   void shouldLogWhenCustomerCreated() throws InterruptedException {
     reset(log); // already logged during startup (initialization)!

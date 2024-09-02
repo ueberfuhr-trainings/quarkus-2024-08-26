@@ -8,6 +8,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @QuarkusTest
 @TestTransaction
 @TestProfile(UsePanacheImplementation.class)
+@Tag("DB")
 public class PersistencePanacheCustomersSinkTests {
 
   @Inject
@@ -30,7 +32,7 @@ public class PersistencePanacheCustomersSinkTests {
     assertThat(result).isNotNull();
   }
 
-  @DisplayName("[DB - Panache] Create Customer")
+  @DisplayName("[Panache] Create Customer")
   @Test
   void given_whenInsert_thenUuidIsGenerated() {
     var customer = Customer
