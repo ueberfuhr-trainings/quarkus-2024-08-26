@@ -34,6 +34,7 @@ public class PersistencePanacheCustomersSinkTests {
 
   @DisplayName("[Panache] Create Customer")
   @Test
+  @Tag("gelbekatze")
   void given_whenInsert_thenUuidIsGenerated() {
     var customer = Customer
       .builder()
